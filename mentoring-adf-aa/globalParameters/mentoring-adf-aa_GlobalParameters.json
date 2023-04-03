@@ -1,0 +1,6 @@
+{
+	"URIofHTTPPOST_secret": {
+		"type": "string",
+		"value": "https://mentoring-key-vault-aav2.vault.azure.net/secrets/HTTP-POST-URL/d64116609827469d8e3aed26a15e0005?api-version=7.0"
+	}
+}

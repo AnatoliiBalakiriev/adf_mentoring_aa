@@ -1,0 +1,45 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "mentoring-adf-aa"
+		},
+		"LinkedServiceForBlobStorageAustralia_connectionString": {
+			"value": ""
+		},
+		"LinkedServiceForSQLDatabase_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=azure-mentoring-aa.database.windows.net;Initial Catalog=movies;User ID=anatolii"
+		},
+		"LinkedServiceParametrized_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=@{linkedService().ServerName};Initial Catalog=@{linkedService().DatabaseName};User ID=anatolii"
+		},
+		"LinkedServiceToOnlineBlobStorageContainerRawFolderDataLake_connectionString": {
+			"value": ""
+		},
+		"LinkedServiceDataLakeParametrized_properties_typeProperties_url": {
+			"value": "@{linkedService().StorageURL}"
+		},
+		"LinkedServiceForAzureKeyVault_properties_typeProperties_baseUrl": {
+			"value": "https://mentoring-key-vault-aav2.vault.azure.net/"
+		},
+		"LinkedServiceForBlobStorage_properties_typeProperties_sasUri_secretName": {
+			"value": "BlobSASURL"
+		},
+		"LinkedServiceForDataLakeStorage_properties_typeProperties_url": {
+			"value": "https://azurementoringdatalakeaa.dfs.core.windows.net/"
+		},
+		"LinkedServiceToOnlineBlobStorageContainer_properties_typeProperties_sasUri_secretName": {
+			"value": "SASURIforOnlineContainer"
+		},
+		"LinkedServiceToSQLServerForCinemaTickets_properties_typeProperties_connectionString_secretName": {
+			"value": "ConnectionStringToSQLServerWindowsAuthentication"
+		},
+		"LinkedServiceToSQLServerForCinemaTickets_properties_typeProperties_userName": {
+			"value": "KYIV\\Anatolii_Balakiriev1"
+		},
+		"LinkedServicetoDataMartSQLDatabase_properties_typeProperties_connectionString_secretName": {
+			"value": "DataMartConnectionString"
+		}
+	}
+}
