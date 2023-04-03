@@ -1,0 +1,246 @@
+{
+	"name": "Execute Procedures Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "credits to tCast procedure",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spPopulateCast]"
+				},
+				"linkedServiceName": {
+					"referenceName": "LinkedServiceForSQLDatabase",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "credits to tMoviesCastMap procedure",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "credits to tCast procedure",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spPopulateMoviesCastMap]"
+				},
+				"linkedServiceName": {
+					"referenceName": "LinkedServiceForSQLDatabase",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "movies_metadata to tCompany procedure",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "credits to tMoviesCastMap procedure",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spPopulateCompany]"
+				},
+				"linkedServiceName": {
+					"referenceName": "LinkedServiceForSQLDatabase",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "movies_metadata to tMovieStatus procedure",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "movies_metadata to tCompany procedure",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spPopulateMovieStatus]"
+				},
+				"linkedServiceName": {
+					"referenceName": "LinkedServiceForSQLDatabase",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "movies_metadata to tGenre procedure",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "movies_metadata to tMovieStatus procedure",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spPopulateGenre]"
+				},
+				"linkedServiceName": {
+					"referenceName": "LinkedServiceForSQLDatabase",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "movies_metadata to tMovies procedure",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "movies_metadata to tGenre procedure",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spPopulateMovies]"
+				},
+				"linkedServiceName": {
+					"referenceName": "LinkedServiceForSQLDatabase",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "movies_metadata to tMoviesCompanyMap procedure",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "movies_metadata to tMovies procedure",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spPopulateMoviesCompanyMap]"
+				},
+				"linkedServiceName": {
+					"referenceName": "LinkedServiceForSQLDatabase",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "movies_metadata to tMoviesGenreMap procedure",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "movies_metadata to tMoviesCompanyMap procedure",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spPopulateMoviesGenreMap]"
+				},
+				"linkedServiceName": {
+					"referenceName": "LinkedServiceForSQLDatabase",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "ratings to tRatings procedure",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "movies_metadata to tMoviesGenreMap procedure",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spPopulatetRatings]"
+				},
+				"linkedServiceName": {
+					"referenceName": "LinkedServiceForSQLDatabase",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-01-24T19:27:05Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

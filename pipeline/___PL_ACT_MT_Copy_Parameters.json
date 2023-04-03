@@ -1,0 +1,101 @@
+{
+	"name": "___PL_ACT_MT_Copy_Parameters",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_files_add_timestamp",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.SourceFileName",
+								"type": "Expression"
+							},
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Info",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "LinkedServiceForDataLakeStorage",
+								"type": "LinkedServiceReference"
+							},
+							"path": "log"
+						}
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_ABLB_files",
+						"type": "DatasetReference",
+						"parameters": {
+							"SourceFileName": "@pipeline().parameters.SourceFileName"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_ADLS_Files",
+						"type": "DatasetReference",
+						"parameters": {
+							"SinkFileName": {
+								"value": "@concat(replace(pipeline().parameters.SourceFileName, '.csv', ''), '_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"SourceFileName": {
+				"type": "string",
+				"defaultValue": "@dataset().SourceFileName"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-08T13:25:58Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

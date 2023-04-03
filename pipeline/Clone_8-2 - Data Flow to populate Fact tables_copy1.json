@@ -1,0 +1,34 @@
+{
+	"name": "Clone_8-2 - Data Flow to populate Fact tables_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Populate Fact tables",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Clone_Fact Tables population",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-03-22T19:29:49Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

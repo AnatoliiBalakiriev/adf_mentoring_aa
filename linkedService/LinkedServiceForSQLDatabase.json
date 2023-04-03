@@ -1,0 +1,23 @@
+{
+	"name": "LinkedServiceForSQLDatabase",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=azure-mentoring-aa.database.windows.net;Initial Catalog=movies;User ID=anatolii",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LinkedServiceForAzureKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "mentoring-adf-aa"
+			}
+		},
+		"connectVia": {
+			"referenceName": "Azure-IR-M8",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

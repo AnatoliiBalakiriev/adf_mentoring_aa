@@ -1,0 +1,29 @@
+{
+	"name": "LinkedServiceDataLakeParametrized",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"parameters": {
+			"StorageURL": {
+				"type": "string",
+				"defaultValue": "https://azurementoringdatalakeaa.dfs.core.windows.net"
+			}
+		},
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "@{linkedService().StorageURL}",
+			"accountKey": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LinkedServiceForAzureKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "DataLakeAccessKey"
+			}
+		},
+		"connectVia": {
+			"referenceName": "Azure-IR-M8",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

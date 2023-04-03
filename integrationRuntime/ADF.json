@@ -1,0 +1,6 @@
+{
+	"name": "ADF",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}

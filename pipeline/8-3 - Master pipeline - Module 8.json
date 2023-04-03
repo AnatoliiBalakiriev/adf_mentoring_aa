@@ -1,0 +1,103 @@
+{
+	"name": "8-3 - Master pipeline - Module 8",
+	"properties": {
+		"activities": [
+			{
+				"name": "Incremental copy from blob to datalake",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "7-1 - Incremental copy from blob to datalake",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Load JSON to Azure SQL Database",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Incremental copy from blob to datalake",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "7-2 - Load JSON to Azure SQL Database",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Archive processed files v2",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Load JSON to Azure SQL Database",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "7-3 - Archive processed files v2",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Data Flow to populate Dimension tables",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Archive processed files v2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "8-1 - Data Flow to populate Dimension tables",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Data Flow to populate Fact tables",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Data Flow to populate Dimension tables",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "8-2 - Data Flow to populate Fact tables",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-03-22T21:39:16Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

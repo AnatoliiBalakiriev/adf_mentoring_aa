@@ -1,0 +1,19 @@
+{
+	"name": "LinkedServiceToOnlineBlobStorageContainer",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"sasUri": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LinkedServiceForAzureKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "SASURIforOnlineContainer",
+				"secretVersion": "de0fc4d2dbac4afeb4e6937e2ee83c2e"
+			}
+		}
+	}
+}

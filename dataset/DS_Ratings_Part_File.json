@@ -1,0 +1,37 @@
+{
+	"name": "DS_Ratings_Part_File",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LinkedServiceForBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "ratings_part*.csv",
+				"container": "movies"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "cast",
+				"type": "String"
+			},
+			{
+				"name": "crew",
+				"type": "String"
+			},
+			{
+				"name": "id",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

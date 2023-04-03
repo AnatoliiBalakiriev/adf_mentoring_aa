@@ -1,0 +1,35 @@
+{
+	"name": "DynamicDatasetAzureSQL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LinkedServiceParametrized",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"ServerName": "azure-mentoring-aa.database.windows.net",
+				"DatabaseName": "movies"
+			}
+		},
+		"parameters": {
+			"DS_SchemaName": {
+				"type": "string"
+			},
+			"DS_TableName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().DS_SchemaName",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().DS_TableName",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,11 @@
+{
+	"name": "LinkedServiceForDataLakeStorage",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://azurementoringdatalakeaa.dfs.core.windows.net/"
+		}
+	}
+}

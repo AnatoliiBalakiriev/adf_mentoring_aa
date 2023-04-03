@@ -1,0 +1,73 @@
+{
+	"name": "DynamicDatasetDataLake",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LinkedServiceDataLakeParametrized",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"StorageURL": "https://azurementoringdatalakeaa.dfs.core.windows.net"
+			}
+		},
+		"parameters": {
+			"DS_SourceContainer": {
+				"type": "string"
+			},
+			"DS_SourceFolder": {
+				"type": "string"
+			},
+			"DS_SourceFile": {
+				"type": "string"
+			},
+			"DS_ColumnDelimiter": {
+				"type": "string"
+			},
+			"DS_Encoding": {
+				"type": "string"
+			},
+			"DS_EscapeCharacter": {
+				"type": "string"
+			},
+			"DS_QuoteCharacter": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().DS_SourceFile",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().DS_SourceFolder",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().DS_SourceContainer",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": {
+				"value": "@dataset().DS_ColumnDelimiter",
+				"type": "Expression"
+			},
+			"encodingName": {
+				"value": "@dataset().DS_Encoding",
+				"type": "Expression"
+			},
+			"escapeChar": {
+				"value": "@dataset().DS_EscapeCharacter",
+				"type": "Expression"
+			},
+			"firstRowAsHeader": true,
+			"quoteChar": {
+				"value": "@dataset().DS_QuoteCharacter",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

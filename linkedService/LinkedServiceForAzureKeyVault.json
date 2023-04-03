@@ -1,0 +1,11 @@
+{
+	"name": "LinkedServiceForAzureKeyVault",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://mentoring-key-vault-aav2.vault.azure.net/"
+		}
+	}
+}

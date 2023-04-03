@@ -1,0 +1,31 @@
+{
+	"name": "DS_ABLB_files",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LinkedServiceForBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"SourceFileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().SourceFileName",
+					"type": "Expression"
+				},
+				"container": "movies"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

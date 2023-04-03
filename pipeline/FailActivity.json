@@ -1,0 +1,20 @@
+{
+	"name": "FailActivity",
+	"properties": {
+		"activities": [
+			{
+				"name": "Fail",
+				"type": "Fail",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"message": "ErrorCode=UserErrorFileNotFound,'Type=Microsoft.DataTransfer.Common.Shared.HybridDeliveryException,Message=ADLS Gen2 operation failed for: Operation returned an invalid status code 'NotFound'. Account: 'azurementoringdatalakeaa'. FileSystem: 'raw'. Path: 'metadata-driven/unknown_file.csv'. ErrorCode: 'PathNotFound'. Message: 'The specified path does not exist.'. RequestId: 'd8bf6c5f-a01f-001b-4770-62b025000000'. TimeStamp: 'Wed, 29 Mar 2023 18:56:30 GMT'.,Source=Microsoft.DataTransfer.ClientLibrary,''Type=Microsoft.Azure.Storage.Data.Models.ErrorSchemaException,Message=Operation returned an invalid status code 'NotFound',Source=Microsoft.DataTransfer.ClientLibrary,'",
+					"errorCode": "9012: UserErrorFileNotFound"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-03-30T18:36:28Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

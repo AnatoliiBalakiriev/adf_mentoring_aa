@@ -1,0 +1,200 @@
+{
+	"name": "Population",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DatasetFortMoviesTable",
+						"type": "DatasetReference"
+					},
+					"name": "tMoviesTable"
+				},
+				{
+					"dataset": {
+						"referenceName": "DatasetFortMovieStatusTable",
+						"type": "DatasetReference"
+					},
+					"name": "tMoviesStatusTable"
+				},
+				{
+					"dataset": {
+						"referenceName": "DatasetFortOnlineServiceTable",
+						"type": "DatasetReference"
+					},
+					"name": "tOnlineServiceTable"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DatasetForDimMovieTable",
+						"type": "DatasetReference"
+					},
+					"name": "DestinationDimMovieTable"
+				},
+				{
+					"dataset": {
+						"referenceName": "DatasetForDimOnlineServiceTable",
+						"type": "DatasetReference"
+					},
+					"name": "DestinationDimOnlineServiceTable"
+				}
+			],
+			"transformations": [
+				{
+					"name": "JoinTwoTables"
+				},
+				{
+					"name": "SelectionRequiredColumns"
+				},
+				{
+					"name": "AuditColumns"
+				},
+				{
+					"name": "SelectionRequiredColumns2"
+				},
+				{
+					"name": "AuditColumns2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          MovieId as integer,",
+				"          MovieIdNK as integer,",
+				"          Budget as integer,",
+				"          HomepagePath as string,",
+				"          Title as string,",
+				"          OriginalTitle as string,",
+				"          ReleaseDate as date,",
+				"          Revenue as long,",
+				"          Runtime as integer,",
+				"          MovieStatusId as integer,",
+				"          AvgVote as decimal(3,1),",
+				"          CreatedDate as timestamp,",
+				"          ModifiedDate as timestamp,",
+				"          SrcFileName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> tMoviesTable",
+				"source(output(",
+				"          MovieStatusId as integer,",
+				"          MovieStatusName as string,",
+				"          CreatedDate as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> tMoviesStatusTable",
+				"source(output(",
+				"          ServiceId as integer,",
+				"          ServiceCode as string,",
+				"          ServiceName as string,",
+				"          CreatedDate as timestamp,",
+				"          ModifiedDate as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> tOnlineServiceTable",
+				"tMoviesTable, tMoviesStatusTable join(tMoviesTable@MovieStatusId == tMoviesStatusTable@MovieStatusId,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinTwoTables",
+				"JoinTwoTables select(mapColumn(",
+				"          MovieId,",
+				"          tMoviesMovieIdNK = MovieIdNK,",
+				"          Budget,",
+				"          HomepagePath,",
+				"          tMoviesTitle = Title,",
+				"          OriginalTitle,",
+				"          tMoviesReleaseDate = ReleaseDate,",
+				"          Revenue,",
+				"          tMoviesRuntime = Runtime,",
+				"          MovieStatusId = tMoviesTable@MovieStatusId,",
+				"          AvgVote,",
+				"          tMoviesCreatedDate = tMoviesTable@CreatedDate,",
+				"          tMoviesModifiedDate = ModifiedDate,",
+				"          SrcFileName,",
+				"          tMoviesStatusMovieStatusId = tMoviesStatusTable@MovieStatusId,",
+				"          tMoviesStatusMovieStatusName = MovieStatusName,",
+				"          tMoviesStatusCreatedDate = tMoviesStatusTable@CreatedDate",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectionRequiredColumns",
+				"SelectionRequiredColumns derive(tMoviesCreatedDate = currentUTC(),",
+				"          tMoviesStatusCreatedDate = currentUTC(),",
+				"          tMoviesModifiedDate = currentUTC()) ~> AuditColumns",
+				"tOnlineServiceTable select(mapColumn(",
+				"          ServiceId,",
+				"          tOnlineServiceServiceCode = ServiceCode,",
+				"          tOnlineServiceServiceName = ServiceName,",
+				"          tOnlineServiceCreatedDate = CreatedDate,",
+				"          tOnlineServiceModifiedDate = ModifiedDate",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectionRequiredColumns2",
+				"SelectionRequiredColumns2 derive(tOnlineServiceCreatedDate = currentUTC(),",
+				"          tOnlineServiceModifiedDate = currentUTC()) ~> AuditColumns2",
+				"AuditColumns sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          MovieKey as integer,",
+				"          MovieIdNK as integer,",
+				"          Title as string,",
+				"          ReleaseDate as date,",
+				"          Runtime as integer,",
+				"          MovieStatus as string,",
+				"          CreatedDate as timestamp,",
+				"          ModifiedDate as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          MovieIdNK = tMoviesMovieIdNK,",
+				"          Title = tMoviesTitle,",
+				"          ReleaseDate = tMoviesReleaseDate,",
+				"          Runtime = tMoviesRuntime,",
+				"          MovieStatus = tMoviesStatusMovieStatusName,",
+				"          CreatedDate = tMoviesCreatedDate,",
+				"          ModifiedDate = tMoviesModifiedDate",
+				"     )) ~> DestinationDimMovieTable",
+				"AuditColumns2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ServiceKey as integer,",
+				"          ServiceCode as string,",
+				"          ServiceName as string,",
+				"          CreatedDate as timestamp,",
+				"          ModifiedDate as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ServiceCode = tOnlineServiceServiceCode,",
+				"          ServiceName = tOnlineServiceServiceName,",
+				"          CreatedDate = tOnlineServiceCreatedDate,",
+				"          ModifiedDate = tOnlineServiceModifiedDate",
+				"     )) ~> DestinationDimOnlineServiceTable"
+			]
+		}
+	}
+}

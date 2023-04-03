@@ -1,0 +1,31 @@
+{
+	"name": "LinkedServiceToSQLServerForCinemaTickets",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LinkedServiceForAzureKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "ConnectionStringToSQLServerWindowsAuthentication"
+			},
+			"userName": "KYIV\\Anatolii_Balakiriev1",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LinkedServiceForAzureKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "MyLocalPassword"
+			}
+		},
+		"connectVia": {
+			"referenceName": "IntegrationRuntimeFor6thModule",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
