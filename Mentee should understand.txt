@@ -1,0 +1,37 @@
+The distinction between Linked Service and Dataset
+Differences between Azure Blob Storage and Azure Data Lake
+Security levels in ADLS Gen2 (RBAC and ACL)
+Monitoring pipeline execution
+
+How to get pipeline run consumption
+What is DIU
+How DIU impacts on pipeline run consumption
+Factors affecting the cost of pipeline.
+
+What is Azure Integration Runtime?
+How IR location impacts on copy activity duration?
+
+How to load data between different data sources in Azure Cloud
+How to use ADF to invoke SQL stored procedures
+How nested pipelines work in ADF.
+
+How to copy files incrementally
+How Degree of parallelism setting impacts copy activity performance
+
+What are the mapping data flows
+How to calculate the cost of data flow execution
+
+What is metadata-driven approach
+Differences between data-driven and metadata-driven approaches 
+How to implement parametrization in ADF activities
+
+How to monitor Azure Data Factory with different metrics
+How to create and manage metric alerts 
+How to use common operators in querying with Kusto Query Language (KQL)
+
+How to use Logic Apps to send email notification
+How to send email from Azure Data Factory pipeline
+What are global parameters and how to use them
+
+How to create and configure GitHub repository to use in Azure Data Factory
+What is the difference in terms of functionality between Live Mode and GitHub Mode
